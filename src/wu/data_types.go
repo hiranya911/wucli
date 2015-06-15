@@ -4,17 +4,17 @@ package wu
 type WeatherData struct {
 	CurrentObservation struct {
 		DisplayLocation struct {
-			Full           string `json:"full"`
-			Latitude       string `json:"latitude"`
-			Longitude      string `json:"longitude"`
+			Full      string `json:"full"`
+			Latitude  string `json:"latitude"`
+			Longitude string `json:"longitude"`
 		} `json:"display_location"`
-		FeelslikeString string   `json:"feelslike_string"`
-		TemperatureString     string  `json:"temperature_string"`
-		Weather               string  `json:"weather"`
-		WindString            string `json:"wind_string"`
-		WindchillString       string `json:"windchill_string"`
-		PrecipTodayString     string `json:"precip_today_string"`
-		ObservationTime       string  `json:"observation_time"`
+		FeelslikeString   string `json:"feelslike_string"`
+		TemperatureString string `json:"temperature_string"`
+		Weather           string `json:"weather"`
+		WindString        string `json:"wind_string"`
+		WindchillString   string `json:"windchill_string"`
+		PrecipTodayString string `json:"precip_today_string"`
+		ObservationTime   string `json:"observation_time"`
 	} `json:"current_observation"`
 	Forecast struct {
 		TxtForecast struct {
