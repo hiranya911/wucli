@@ -30,3 +30,12 @@ Alternatively, you can replace the spaces with underscores (_).
 ## Building
 Execute the build.sh script. This will build the code, and copy the resulting binary to /usr/bin
 directory (tested on OS-X Mountain Lion with Golang 1.2.1).
+
+## Configuration
+You need to obtain an API key from http://www.wunderground.com/weather/api to try this application.
+Once obtained, you can save it as an environment variable named WU_API_KEY:
+
+     export WU_API_KEY=XXXXXX
+
+Alternatively you can create a file named .wuapi in your home directory ($HOME), and save your
+API key there.
