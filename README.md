@@ -1,13 +1,13 @@
 # wucli
 Command-line Interface for Weather Underground API (http://www.wunderground.com/)
 
-NAME
+## Name
 	wucli -- Weather Underground Command-line Interface
 
-USAGE
+## Usage
 	wucli [location/keyword]
 
-DESCRIPTION
+## Description
 	Run wucli without any arguments to check the weather of your current location (determined
 	automatically from your IP address).
 
@@ -27,6 +27,6 @@ DESCRIPTION
 	If the location argument or the keyword contains spaces, enclose the argument within quotes.
 	Alternatively, you can replace the spaces with underscores (_).
 
-BUILD
+## Building
 	Execute the build.sh script. This will build the code, and copy the resulting binary to /usr/bin
 	directory (tested on OS-X Mountain Lion with Golang 1.2.1).
