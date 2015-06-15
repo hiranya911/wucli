@@ -7,6 +7,38 @@ import (
 	"wu"
 )
 
+func printUsage() {
+	fmt.Println("NAME")
+	fmt.Println("\twucli -- Weather Underground Command-line Interface\n")
+
+	fmt.Println("USAGE")
+	fmt.Println("\twucli [location/keyword]\n")
+
+	fmt.Println("DESCRIPTION")
+	fmt.Println("\tRun wucli without any arguments to check the weather of your current location (determined")
+	fmt.Println("\tautomatically from your IP address).\n")
+
+	fmt.Println("\tOptionally you can run wucli with a location argument to get weather data related to a specific")
+	fmt.Println("\tcity or area. Following types of location arguments are supported as of now:\n")
+
+	fmt.Println("\t  * US state/city [e.g. CA/San Francisco]")
+	fmt.Println("\t  * US zipcode [e.g. 93106]")
+	fmt.Println("\t  * country/city [e.g. Sri Lanka/Colombo]")
+	fmt.Println("\t  * latitude,longitude [e.g. 37.8,-122.4]")
+	fmt.Println("\t  * airport code [e.g. KJFK]\n")
+
+	fmt.Println("\tYou can also enter a simple keyword or a phrase as a search term [e.g. Belgrade]. In this case")
+	fmt.Println("\twucli will return a list of matching locations with their unique zmw codes. You may rerun wucli")
+	fmt.Println("\twith a zmw code as a location argument, to indicate which location that you are interested in.\n")
+
+	fmt.Println("\tIf the location argument or the keyword contains spaces, enclose the argument within quotes.")
+	fmt.Println("\tAlternatively, you can replace the spaces with underscores (_).\n")
+
+	fmt.Println("CREDITS")
+	fmt.Println("\tDeveloped by: Hiranya Jayathilaka")
+	fmt.Println("\tRemote API: http://www.wunderground.com\n")
+}
+
 func main() {
 	argsWithoutProg := os.Args[1:]
 	var location string
@@ -15,7 +47,12 @@ func main() {
 	} else if len(argsWithoutProg) == 1 {
 		location = argsWithoutProg[0]
 	} else {
-		fmt.Println("Usage: wucli [location]")
+		printUsage()
+		return
+	}
+
+	if location == "-h" || location == "help" {
+		printUsage()
 		return
 	}
 
@@ -53,7 +90,7 @@ func main() {
 	fmt.Printf("Wind chill: %s\n", current.WindchillString)
 	fmt.Printf("Precipitation: %s\n", current.PrecipTodayString)
 
-	fmt.Println("Weather Forecast:")
+	fmt.Println("\nWeather Forecast:")
 	for _, fc := range forecast.Forecastday {
 		fmt.Printf("  * %s: %s\n", fc.Title, fc.Fcttext)
 	}
