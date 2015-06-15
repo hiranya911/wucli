@@ -1,3 +1,5 @@
+// Package wu provides the utility methods for querying the Weather Underground
+// REST API.
 package wu
 
 import (
@@ -56,6 +58,9 @@ func save(url string, data []byte) {
 	ioutil.WriteFile(cacheKey(url), data, 0644)
 }
 
+// Query the Weather Undergraound REST API for weather data regarding some 
+// location. This function caches the responses returned by the REST API 
+// for future reference.
 func Query(location string) (*WeatherData, error) {
 	key, err := getKey()
 	if err != nil {
