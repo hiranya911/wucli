@@ -37,17 +37,24 @@ func printUsage() {
 	fmt.Println("\tOptionally you can run wucli with a feature argument to get a certain data format related to a specific")
 	fmt.Println("\tcity or area. Following types of feature arguments are supported as of now:\n")
 
-	fmt.Println("\t  * Data Formats Supported are alerts almanac astronomy conditions currenthurricane forecast forecast10day geolookup history hourly hourly10day planner rawtide satellite tide webcams yesterday ")
+	fmt.Println("\t  * Data Formats Supported are alerts almanac conditions  forecast  history hourly  satellite tide webcams yesterday ")
 	
 	fmt.Println("CREDITS")
 	fmt.Println("\tDeveloped by: Hiranya Jayathilaka and Jason Clark (mithereal@gmail.com)")
 	fmt.Println("\tRemote API: http://www.wunderground.com\n")
 }
+func raw(){
+	
+}
 
 func main() {
 	argsWithoutProg := os.Args[1:]
+	
 	var location string
 	var feature string
+	var format string
+	var filters string
+	
 	if len(argsWithoutProg) == 0 {
 		location = "autoip"
 		feature = "conditions,forecast"
@@ -93,18 +100,27 @@ func main() {
 	title := fmt.Sprintf("Location: %s (long: %s, lat: %s)", loc.Full, loc.Longitude, loc.Latitude)
 	fmt.Println(title)
 	fmt.Println(strings.Repeat("=", len(title)))
+	
+	summary := fmt.Sprintf("Summary: %s\n", current.Weather)
+	temperature := fmt.Sprintf("Temperature: %s\n", current.TemperatureString)
+	feelslike := fmt.Sprintf("Feels like: %s\n", current.FeelslikeString)
+	wind := fmt.Sprintf("Wind: %s\n", current.WindString)
+	windchill := fmt.Sprintf("Wind chill: %s\n", current.WindchillString)
+	precipitation := fmt.Sprintf("Precipitation: %s\n", current.PrecipTodayString)
+	
+	fmt.Println(summary)
+	fmt.Println(temperature)
+	fmt.Println(feelslike)
+	fmt.Println(wind)
+	fmt.Println(windchill)
+	fmt.Println(precipitation)
 
-	fmt.Printf("Summary: %s\n", current.Weather)
-	fmt.Printf("Temperature: %s\n", current.TemperatureString)
-	fmt.Printf("Feels like: %s\n", current.FeelslikeString)
-	fmt.Printf("Wind: %s\n", current.WindString)
-	fmt.Printf("Wind chill: %s\n", current.WindchillString)
-	fmt.Printf("Precipitation: %s\n", current.PrecipTodayString)
-
+if(strings.Contains(feature, "forecast")){
 	fmt.Println("\nWeather Forecast:")
 	for _, fc := range forecast.Forecastday {
 		fmt.Printf("  * %s: %s\n", fc.Title, fc.Fcttext)
 	}
+}
 
 	fmt.Printf("\n%s\n", current.ObservationTime)
 }
