@@ -51,33 +51,33 @@ func main() {
 	var location string
 	var feature string
 	var format string
-	var filters string
+	//var filters string
 	
 	if len(argsWithoutProg) == 0 {
 		location = "autoip"
-		feature = "conditions,forecast"
+		feature = "conditions"
 		format = "summary"
-		filters = ""
+		
 	} else if len(argsWithoutProg) == 1 {
 		location = argsWithoutProg[0]
-		feature = "conditions,forecast"
+		feature = "conditions"
 		format = "summary"
-		filters = ""
+	
 	} else if len(argsWithoutProg) == 2 {
 		location = argsWithoutProg[0]
 		feature = argsWithoutProg[1]
 		format = "summary"
-		filters = ""
+	
 	} else if len(argsWithoutProg) == 3 {
 		location = argsWithoutProg[0]
 		feature = argsWithoutProg[1]
 		format = argsWithoutProg[2]
-		filters = ""
+		
 	} else if len(argsWithoutProg) == 4 {
 		location = argsWithoutProg[0]
 		feature = argsWithoutProg[1]
 		format = argsWithoutProg[2]
-		filters = argsWithoutProg[3]
+		
 	} else {
 		printUsage()
 		return
@@ -98,14 +98,14 @@ func main() {
 	current := wd.CurrentObservation
 	loc := current.DisplayLocation
 	forecast := wd.Forecast.TxtForecast
-	alerts := wd.Alerts
-	almanac := wd.Almanac
-	moonphase := wd.MoonPhase
-	hourly := wd.HourlyForecast
-	satellite := wd.Satellite
-	history := wd.History
-	tide := wd.Tide
-	webcams := wd.Webcams
+	//alerts := wd.Alerts
+	//almanac := wd.Almanac
+	//moonphase := wd.MoonPhase
+	//hourly := wd.HourlyForecast
+	//satellite := wd.Satellite
+	//history := wd.History
+	//tide := wd.Tide
+	//webcams := wd.Webcams
 	results := wd.Response.Results
 	
 	// we need to implement different view and filter functions 
