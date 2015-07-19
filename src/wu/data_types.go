@@ -493,7 +493,7 @@ type WeatherData struct {
 			Hourly int `json:"hourly"`
 			Satellite int `json:"satellite"`
 			Yesterday int `json:"yesterday"`
-			Tide int `json:"tide"
+			Tide int `json:"tide"`
 			Webcams int `json:"webcams"`
 		} `json:"features"`
 		Results []struct {

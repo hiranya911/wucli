@@ -43,9 +43,7 @@ func printUsage() {
 	fmt.Println("\tDeveloped by: Hiranya Jayathilaka and Jason Clark (mithereal@gmail.com)")
 	fmt.Println("\tRemote API: http://www.wunderground.com\n")
 }
-func raw(){
-	
-}
+
 
 func main() {
 	argsWithoutProg := os.Args[1:]
@@ -58,12 +56,28 @@ func main() {
 	if len(argsWithoutProg) == 0 {
 		location = "autoip"
 		feature = "conditions,forecast"
+		format = "summary"
+		filters = ""
 	} else if len(argsWithoutProg) == 1 {
 		location = argsWithoutProg[0]
 		feature = "conditions,forecast"
+		format = "summary"
+		filters = ""
 	} else if len(argsWithoutProg) == 2 {
 		location = argsWithoutProg[0]
 		feature = argsWithoutProg[1]
+		format = "summary"
+		filters = ""
+	} else if len(argsWithoutProg) == 3 {
+		location = argsWithoutProg[0]
+		feature = argsWithoutProg[1]
+		format = argsWithoutProg[2]
+		filters = ""
+	} else if len(argsWithoutProg) == 4 {
+		location = argsWithoutProg[0]
+		feature = argsWithoutProg[1]
+		format = argsWithoutProg[2]
+		filters = argsWithoutProg[3]
 	} else {
 		printUsage()
 		return
@@ -75,28 +89,46 @@ func main() {
 	}
 
 	wd, err := wu.Query(location,feature)
+	
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-
-	locationResults := wd.Response.Results
-	if locationResults != nil {
+	
+	current := wd.CurrentObservation
+	loc := current.DisplayLocation
+	forecast := wd.Forecast.TxtForecast
+	alerts := wd.Alerts
+	almanac := wd.Almanac
+	moonphase := wd.MoonPhase
+	hourly := wd.HourlyForecast
+	satellite := wd.Satellite
+	history := wd.History
+	tide := wd.Tide
+	webcams := wd.Webcams
+	results := wd.Response.Results
+	
+	// we need to implement different view and filter functions 
+	
+		if results != nil {
 		fmt.Println("Locations matched:")
-		for _, lr := range locationResults {
-			if lr.State != "" {
-				fmt.Printf("  * %s, %s, %s (zmw:%s)\n", lr.City, lr.State, lr.CountryName, lr.Zmw)
+		for _, r := range results {
+			if r.State != "" {
+				fmt.Printf("  * %s, %s, %s (zmw:%s)\n", r.City, r.State, r.CountryName, r.Zmw)
 			} else {
-				fmt.Printf("  * %s, %s (zmw:%s)\n", lr.City, lr.CountryName, lr.Zmw)
+				fmt.Printf("  * %s, %s (zmw:%s)\n", r.City, r.CountryName, r.Zmw)
 			}
 		}
 		return
 	}
-
-	current := wd.CurrentObservation
-	loc := current.DisplayLocation
-	forecast := wd.Forecast.TxtForecast
-
+	
+	if strings.Contains(format, "raw") {
+		fmt.Println(current.Weather)
+		fmt.Println(current.TemperatureString)
+		fmt.Println(current.FeelslikeString)
+		fmt.Println(current.WindString)
+		fmt.Println(current.PrecipTodayString)
+    }else{
 	title := fmt.Sprintf("Location: %s (long: %s, lat: %s)", loc.Full, loc.Longitude, loc.Latitude)
 	fmt.Println(title)
 	fmt.Println(strings.Repeat("=", len(title)))
@@ -114,13 +146,16 @@ func main() {
 	fmt.Println(wind)
 	fmt.Println(windchill)
 	fmt.Println(precipitation)
+	
 
-if(strings.Contains(feature, "forecast")){
+	if strings.Contains(feature, "forecast") {
 	fmt.Println("\nWeather Forecast:")
 	for _, fc := range forecast.Forecastday {
 		fmt.Printf("  * %s: %s\n", fc.Title, fc.Fcttext)
 	}
 }
+}
+
 
 	fmt.Printf("\n%s\n", current.ObservationTime)
 }
