@@ -123,11 +123,11 @@ func main() {
 	}
 	
 	if strings.Contains(format, "raw") {
-		fmt.Println(current.Weather)
-		fmt.Println(current.TemperatureString)
-		fmt.Println(current.FeelslikeString)
-		fmt.Println(current.WindString)
-		fmt.Println(current.PrecipTodayString)
+		fmt.Println("Summary:", current.Weather)
+		fmt.Println("Temperature:",current.TemperatureString)
+		fmt.Println("Feels like:",current.FeelslikeString)
+		fmt.Println("Wind:",current.WindString)
+		fmt.Println("Precipitation:",current.PrecipTodayString)
     }else{
 	title := fmt.Sprintf("Location: %s (long: %s, lat: %s)", loc.Full, loc.Longitude, loc.Latitude)
 	fmt.Println(title)
@@ -154,8 +154,9 @@ func main() {
 		fmt.Printf("  * %s: %s\n", fc.Title, fc.Fcttext)
 	}
 }
+fmt.Printf("\n%s\n", current.ObservationTime)
 }
 
 
-	fmt.Printf("\n%s\n", current.ObservationTime)
+	
 }
