@@ -35,17 +35,23 @@ func printUsage() {
 	fmt.Println("\tAlternatively, you can replace the spaces with underscores (_).\n")
 
 	fmt.Println("CREDITS")
-	fmt.Println("\tDeveloped by: Hiranya Jayathilaka")
+	fmt.Println("\tDeveloped by: Hiranya Jayathilaka and Jason Clark (mithereal@gmail.com)")
 	fmt.Println("\tRemote API: http://www.wunderground.com\n")
 }
 
 func main() {
 	argsWithoutProg := os.Args[1:]
 	var location string
+	var feature string
 	if len(argsWithoutProg) == 0 {
 		location = "autoip"
+		feature = "conditions,forecast"
 	} else if len(argsWithoutProg) == 1 {
 		location = argsWithoutProg[0]
+		feature = "conditions,forecast"
+	} else if len(argsWithoutProg) == 2 {
+		location = argsWithoutProg[0]
+		feature = argsWithoutProg[1]
 	} else {
 		printUsage()
 		return
@@ -56,7 +62,7 @@ func main() {
 		return
 	}
 
-	wd, err := wu.Query(location)
+	wd, err := wu.Query(location,feature)
 	if err != nil {
 		fmt.Println(err)
 		return

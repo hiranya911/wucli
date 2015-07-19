@@ -61,14 +61,14 @@ func save(url string, data []byte) {
 // Query the Weather Undergraound REST API for weather data regarding some 
 // location. This function caches the responses returned by the REST API 
 // for future reference.
-func Query(location string) (*WeatherData, error) {
+func Query(location string, feature string) (*WeatherData, error) {
 	key, err := getKey()
 	if err != nil {
 		return nil, err
 	}
-
+	feature = strings.Replace(feature, ",", "/", -1)
 	location = strings.Replace(location, " ", "_", -1)
-	url := fmt.Sprintf("http://api.wunderground.com/api/%s/conditions/forecast/q/%s.json", key, location)
+	url := fmt.Sprintf("http://api.wunderground.com/api/%s/%s/q/%s.json", key, feature, location)
 	var data []byte
 	data = lookup(url)
 	if data == nil {
