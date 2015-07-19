@@ -33,7 +33,12 @@ func printUsage() {
 
 	fmt.Println("\tIf the location argument or the keyword contains spaces, enclose the argument within quotes.")
 	fmt.Println("\tAlternatively, you can replace the spaces with underscores (_).\n")
+	
+	fmt.Println("\tOptionally you can run wucli with a feature argument to get a certain data format related to a specific")
+	fmt.Println("\tcity or area. Following types of feature arguments are supported as of now:\n")
 
+	fmt.Println("\t  * Data Formats Supported are alerts almanac astronomy conditions currenthurricane forecast forecast10day geolookup history hourly hourly10day planner rawtide satellite tide webcams yesterday ")
+	
 	fmt.Println("CREDITS")
 	fmt.Println("\tDeveloped by: Hiranya Jayathilaka and Jason Clark (mithereal@gmail.com)")
 	fmt.Println("\tRemote API: http://www.wunderground.com\n")
