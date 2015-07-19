@@ -75,7 +75,7 @@ func Query(location string, feature string) (*WeatherData, error) {
 	
 	feature = strings.Replace(feature, ",", "/", -1)
 	location = strings.Replace(location, " ", "_", -1)
-	url := fmt.Sprintf("http://api.wunderground.com/api/%s/%s/q/%s.json", key, feature, location)
+	url := fmt.Sprintf("http://api.wunderground.com/api/%s/%s/q/%s.json", key,  feature, location)
 	
 	var data []byte
 	data = lookup(url)

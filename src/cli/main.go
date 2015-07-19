@@ -55,12 +55,12 @@ func main() {
 	
 	if len(argsWithoutProg) == 0 {
 		location = "autoip"
-		feature = "conditions"
+		feature = "conditions,forecast"
 		format = "summary"
 		
 	} else if len(argsWithoutProg) == 1 {
 		location = argsWithoutProg[0]
-		feature = "conditions"
+		feature = "conditions,forecast"
 		format = "summary"
 	
 	} else if len(argsWithoutProg) == 2 {
