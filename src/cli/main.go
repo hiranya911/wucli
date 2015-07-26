@@ -98,7 +98,7 @@ func main() {
 	current := wd.CurrentObservation
 	loc := current.DisplayLocation
 	forecast := wd.Forecast.TxtForecast
-	//alerts := wd.Alerts
+	alerts := wd.Alerts
 	//almanac := wd.Almanac
 	//moonphase := wd.MoonPhase
 	hourly := wd.HourlyForecast
@@ -139,6 +139,12 @@ func main() {
 	fmt.Println(wind)
 	fmt.Println(windchill)
 	fmt.Println(precipitation)
+}
+		if strings.Contains(feature, "alerts") {
+				fmt.Println("\nWeather Alerts:")
+				for _, a := range alerts {
+		fmt.Printf("  * %s: %s expires on: %s\n", a.Date, a.Description, a.Expires)
+	}
 }
 	
 	
