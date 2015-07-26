@@ -12,7 +12,7 @@ func printUsage() {
 	fmt.Println("\twucli -- Weather Underground Command-line Interface\n")
 
 	fmt.Println("USAGE")
-	fmt.Println("\twucli [location/keyword]\n")
+	fmt.Println("\twucli [location/keyword] [feature] [output]\n")
 
 	fmt.Println("DESCRIPTION")
 	fmt.Println("\tRun wucli without any arguments to check the weather of your current location (determined")
@@ -37,7 +37,16 @@ func printUsage() {
 	fmt.Println("\tOptionally you can run wucli with a feature argument to get a certain data output related to a specific")
 	fmt.Println("\tcity or area. Following types of feature arguments are supported as of now:\n")
 
-	fmt.Println("\t  * Data outputs Supported are alerts almanac conditions  forecast  history hourly  satellite tide webcams yesterday ")
+	fmt.Println("\t  * alerts")
+	fmt.Println("\t  * almanac ")
+	fmt.Println("\t  * conditions ")
+	fmt.Println("\t  * forecast ")
+	fmt.Println("\t  * hourly ")
+	fmt.Println("\t  * satellite ")
+	
+	fmt.Println("\nWucli can output data formatted in the following types\n")
+	fmt.Println("\t  * summary (default)")
+	fmt.Println("\t  * raw (key/value pairs)")
 	
 	fmt.Println("CREDITS")
 	fmt.Println("\tDeveloped by: Hiranya Jayathilaka and Jason Clark (mithereal@gmail.com)")
@@ -53,12 +62,16 @@ func main() {
 	var output string
 	//var filters string
 	
-	if len(argsWithoutProg) == 0 {
+	if len(os.Args) < 3 {
 		location = "autoip"
 		feature = "conditions,forecast"
 		output = "summary"
 		
-	} else if len(argsWithoutProg) == 1 {
+		
+	} else if argsWithoutProg[0] == "-h" || argsWithoutProg[0] == "help" {
+		printUsage()
+		return
+	}else if len(argsWithoutProg) == 1 {
 		location = argsWithoutProg[0]
 		feature = "conditions,forecast"
 		output = "summary"
@@ -79,14 +92,12 @@ func main() {
 		output = argsWithoutProg[2]
 		
 	} else {
-		printUsage()
-		return
+		location = "autoip"
+		feature = "conditions,forecast"
+		output = "summary"
 	}
 
-	if argsWithoutProg[0] == "-h" || argsWithoutProg[0] == "help" {
-		printUsage()
-		return
-	}
+	
 
 	wd, err := wu.Query(location,feature)
 	
@@ -100,14 +111,13 @@ func main() {
 	forecast := wd.Forecast.TxtForecast
 	alerts := wd.Alerts
 	almanac := wd.Almanac
-	//moonphase := wd.MoonPhase
+	moonphase := wd.MoonPhase
 	hourly := wd.HourlyForecast
-	//satellite := wd.Satellite
+	satellite := wd.Satellite
 	//history := wd.History
 	//tide := wd.Tide
 	//webcams := wd.Webcams
 	
-	results := wd.Response.Results
 	
 	
 	switch output {
@@ -143,20 +153,20 @@ func main() {
 		if strings.Contains(feature, "alerts") {
 				fmt.Println("\nWeather Alerts:")
 				for _, a := range alerts {
-		fmt.Printf("  * %s: %s expires on: %s\n", a.Date, a.Description, a.Expires)
+		fmt.Printf("   %s: %s expires on: %s\n", a.Date, a.Description, a.Expires)
 	}
 }
 		if strings.Contains(feature, "almanac") {
 				fmt.Println("\nWeather almanac:")
 				
-		fmt.Printf("  * Airport Code: %s\n", almanac.AirportCode)
-		fmt.Printf("  * High Temp: %s\n", almanac.TempHigh.Normal.F)
-		fmt.Printf("  * Record High Temp: %s\n", almanac.TempHigh.Record.F)
-		fmt.Printf("  * Date: %s\n", almanac.TempHigh.Recordyear)
+		fmt.Printf("   Airport Code: %s\n", almanac.AirportCode)
+		fmt.Printf("   High Temp: %s\n", almanac.TempHigh.Normal.F)
+		fmt.Printf("   Record High Temp: %s\n", almanac.TempHigh.Record.F)
+		fmt.Printf("   Date: %s\n", almanac.TempHigh.Recordyear)
 
-		fmt.Printf("  * Low Temp: %s\n", almanac.TempLow.Normal.F)
-		fmt.Printf("  * Record Low Temp: %s\n", almanac.TempLow.Record.F)
-		fmt.Printf("  * Date: %s\n", almanac.TempLow.Recordyear)
+		fmt.Printf("   Low Temp: %s\n", almanac.TempLow.Normal.F)
+		fmt.Printf("   Record Low Temp: %s\n", almanac.TempLow.Record.F)
+		fmt.Printf("   Date: %s\n", almanac.TempLow.Recordyear)
 	
 }
 	
@@ -168,23 +178,31 @@ func main() {
 	}
 }
 	
-	 if results != nil {
-		fmt.Println("Locations matched:")
-		for _, r := range results {
-			if r.State != "" {
-				fmt.Printf("  * %s, %s, %s (zmw:%s)\n", r.City, r.State, r.CountryName, r.Zmw)
-			} else {
-				fmt.Printf("  * %s, %s (zmw:%s)\n", r.City, r.CountryName, r.Zmw)
-			}
-		}
-		return
-	}
 	
 	if strings.Contains(feature, "hourly") {
 		fmt.Println("\nHourly Forecast:")
 		for _, h := range hourly {
 		fmt.Printf("  * %s: %s Temp:%s Dew:%s Uv:%s\n", h.FCTTIME.Pretty, h.Icon, h.Temp.English,h.Humidity,h.Uvi)
 	}
+	
+	if strings.Contains(feature, "moonphase") {
+		fmt.Println("\nMoonphase:")
+		
+		fmt.Printf("   Age: %s\n", moonphase.AgeOfMoon)
+		fmt.Printf("   Time: %s:%s\n", moonphase.CurrentTime.Hour, moonphase.CurrentTime.Minute)
+		fmt.Printf("   Percent Illuminated: %s\n", moonphase.PercentIlluminated)
+		fmt.Printf("   Sunrise: %s:%s\n", moonphase.Sunrise.Hour,moonphase.Sunrise.Minute)
+		fmt.Printf("   Sunset: %s:%s\n", moonphase.Sunset.Hour,moonphase.Sunset.Minute)
+	
+    
+}
+	if strings.Contains(feature, "satellite") {
+		fmt.Println("\nMoonphase:")
+		
+		fmt.Printf("   Imageurl: %s\n", satellite.ImageURL)
+		fmt.Printf("   Imageurl r4: %s:%s\n", satellite.ImageURLIr4)
+		fmt.Printf("   Imageurl VI: %s:%s\n", satellite.ImageURLVis)
+
 	
     
 }
@@ -195,4 +213,4 @@ func main() {
 		
 
 	
-}
+}}
