@@ -83,7 +83,7 @@ func main() {
 		return
 	}
 
-	if location == "-h" || location == "help" {
+	if argsWithoutProg[0] == "-h" || argsWithoutProg[0] == "help" {
 		printUsage()
 		return
 	}
@@ -106,33 +106,25 @@ func main() {
 	//history := wd.History
 	//tide := wd.Tide
 	//webcams := wd.Webcams
+	
 	results := wd.Response.Results
 	
 	// we need to implement different view and filter functions 
 	
-		if results != nil {
-		fmt.Println("Locations matched:")
-		for _, r := range results {
-			if r.State != "" {
-				fmt.Printf("  * %s, %s, %s (zmw:%s)\n", r.City, r.State, r.CountryName, r.Zmw)
-			} else {
-				fmt.Printf("  * %s, %s (zmw:%s)\n", r.City, r.CountryName, r.Zmw)
-			}
-		}
-		return
-	}
-	
-	if strings.Contains(format, "raw") {
+	switch format {
+    case "raw": 
 		fmt.Println("Summary:", current.Weather)
 		fmt.Println("Temperature:",current.TemperatureString)
 		fmt.Println("Feels like:",current.FeelslikeString)
 		fmt.Println("Wind:",current.WindString)
 		fmt.Println("Precipitation:",current.PrecipTodayString)
-    }else{
-	title := fmt.Sprintf("Location: %s (long: %s, lat: %s)", loc.Full, loc.Longitude, loc.Latitude)
+		
+    
+    default: 
+    title := fmt.Sprintf("Location: %s (long: %s, lat: %s)", loc.Full, loc.Longitude, loc.Latitude)
 	fmt.Println(title)
 	fmt.Println(strings.Repeat("=", len(title)))
-	
+
 	summary := fmt.Sprintf("Summary: %s\n", current.Weather)
 	temperature := fmt.Sprintf("Temperature: %s\n", current.TemperatureString)
 	feelslike := fmt.Sprintf("Feels like: %s\n", current.FeelslikeString)
@@ -147,16 +139,28 @@ func main() {
 	fmt.Println(windchill)
 	fmt.Println(precipitation)
 	
-
-	if strings.Contains(feature, "forecast") {
+		if strings.Contains(feature, "forecast") {
 	fmt.Println("\nWeather Forecast:")
 	for _, fc := range forecast.Forecastday {
 		fmt.Printf("  * %s: %s\n", fc.Title, fc.Fcttext)
 	}
 }
-fmt.Printf("\n%s\n", current.ObservationTime)
-}
-
+	
+	 if results != nil {
+		fmt.Println("Locations matched:")
+		for _, r := range results {
+			if r.State != "" {
+				fmt.Printf("  * %s, %s, %s (zmw:%s)\n", r.City, r.State, r.CountryName, r.Zmw)
+			} else {
+				fmt.Printf("  * %s, %s (zmw:%s)\n", r.City, r.CountryName, r.Zmw)
+			}
+		}
+		return
+	}
+	fmt.Printf("\n%s\n", current.ObservationTime)
+    }
+	
+		
 
 	
 }
