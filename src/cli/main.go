@@ -34,10 +34,10 @@ func printUsage() {
 	fmt.Println("\tIf the location argument or the keyword contains spaces, enclose the argument within quotes.")
 	fmt.Println("\tAlternatively, you can replace the spaces with underscores (_).\n")
 	
-	fmt.Println("\tOptionally you can run wucli with a feature argument to get a certain data format related to a specific")
+	fmt.Println("\tOptionally you can run wucli with a feature argument to get a certain data output related to a specific")
 	fmt.Println("\tcity or area. Following types of feature arguments are supported as of now:\n")
 
-	fmt.Println("\t  * Data Formats Supported are alerts almanac conditions  forecast  history hourly  satellite tide webcams yesterday ")
+	fmt.Println("\t  * Data outputs Supported are alerts almanac conditions  forecast  history hourly  satellite tide webcams yesterday ")
 	
 	fmt.Println("CREDITS")
 	fmt.Println("\tDeveloped by: Hiranya Jayathilaka and Jason Clark (mithereal@gmail.com)")
@@ -50,33 +50,33 @@ func main() {
 	
 	var location string
 	var feature string
-	var format string
+	var output string
 	//var filters string
 	
 	if len(argsWithoutProg) == 0 {
 		location = "autoip"
 		feature = "conditions,forecast"
-		format = "summary"
+		output = "summary"
 		
 	} else if len(argsWithoutProg) == 1 {
 		location = argsWithoutProg[0]
 		feature = "conditions,forecast"
-		format = "summary"
+		output = "summary"
 	
 	} else if len(argsWithoutProg) == 2 {
 		location = argsWithoutProg[0]
 		feature = argsWithoutProg[1]
-		format = "summary"
+		output = "summary"
 	
 	} else if len(argsWithoutProg) == 3 {
 		location = argsWithoutProg[0]
 		feature = argsWithoutProg[1]
-		format = argsWithoutProg[2]
+		output = argsWithoutProg[2]
 		
 	} else if len(argsWithoutProg) == 4 {
 		location = argsWithoutProg[0]
 		feature = argsWithoutProg[1]
-		format = argsWithoutProg[2]
+		output = argsWithoutProg[2]
 		
 	} else {
 		printUsage()
@@ -101,7 +101,7 @@ func main() {
 	//alerts := wd.Alerts
 	//almanac := wd.Almanac
 	//moonphase := wd.MoonPhase
-	//hourly := wd.HourlyForecast
+	hourly := wd.HourlyForecast
 	//satellite := wd.Satellite
 	//history := wd.History
 	//tide := wd.Tide
@@ -109,21 +109,19 @@ func main() {
 	
 	results := wd.Response.Results
 	
-	// we need to implement different view and filter functions 
 	
-	switch format {
+	switch output {
     case "raw": 
+    if strings.Contains(feature, "conditions") {
 		fmt.Println("Summary:", current.Weather)
 		fmt.Println("Temperature:",current.TemperatureString)
 		fmt.Println("Feels like:",current.FeelslikeString)
 		fmt.Println("Wind:",current.WindString)
 		fmt.Println("Precipitation:",current.PrecipTodayString)
+	}
 		
-    
     default: 
     title := fmt.Sprintf("Location: %s (long: %s, lat: %s)", loc.Full, loc.Longitude, loc.Latitude)
-	fmt.Println(title)
-	fmt.Println(strings.Repeat("=", len(title)))
 
 	summary := fmt.Sprintf("Summary: %s\n", current.Weather)
 	temperature := fmt.Sprintf("Temperature: %s\n", current.TemperatureString)
@@ -132,12 +130,17 @@ func main() {
 	windchill := fmt.Sprintf("Wind chill: %s\n", current.WindchillString)
 	precipitation := fmt.Sprintf("Precipitation: %s\n", current.PrecipTodayString)
 	
+		if strings.Contains(feature, "conditions") {
+				fmt.Println(title)
+	fmt.Println(strings.Repeat("=", len(title)))
 	fmt.Println(summary)
 	fmt.Println(temperature)
 	fmt.Println(feelslike)
 	fmt.Println(wind)
 	fmt.Println(windchill)
 	fmt.Println(precipitation)
+}
+	
 	
 		if strings.Contains(feature, "forecast") {
 	fmt.Println("\nWeather Forecast:")
@@ -157,6 +160,16 @@ func main() {
 		}
 		return
 	}
+	
+	if strings.Contains(feature, "hourly") {
+		fmt.Println("\nHourly Forecast:")
+		for _, h := range hourly {
+		fmt.Printf("  * %s: %s Temp:%s Dew:%s Uv:%s\n", h.FCTTIME.Pretty, h.Icon, h.Temp.English,h.Humidity,h.Uvi)
+	}
+	
+    
+}
+
 	fmt.Printf("\n%s\n", current.ObservationTime)
     }
 	
