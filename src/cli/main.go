@@ -99,7 +99,7 @@ func main() {
 	loc := current.DisplayLocation
 	forecast := wd.Forecast.TxtForecast
 	alerts := wd.Alerts
-	//almanac := wd.Almanac
+	almanac := wd.Almanac
 	//moonphase := wd.MoonPhase
 	hourly := wd.HourlyForecast
 	//satellite := wd.Satellite
@@ -145,6 +145,19 @@ func main() {
 				for _, a := range alerts {
 		fmt.Printf("  * %s: %s expires on: %s\n", a.Date, a.Description, a.Expires)
 	}
+}
+		if strings.Contains(feature, "almanac") {
+				fmt.Println("\nWeather almanac:")
+				
+		fmt.Printf("  * Airport Code: %s\n", almanac.AirportCode)
+		fmt.Printf("  * High Temp: %s\n", almanac.TempHigh.Normal.F)
+		fmt.Printf("  * Record High Temp: %s\n", almanac.TempHigh.Record.F)
+		fmt.Printf("  * Date: %s\n", almanac.TempHigh.Recordyear)
+
+		fmt.Printf("  * Low Temp: %s\n", almanac.TempLow.Normal.F)
+		fmt.Printf("  * Record Low Temp: %s\n", almanac.TempLow.Record.F)
+		fmt.Printf("  * Date: %s\n", almanac.TempLow.Recordyear)
+	
 }
 	
 	
