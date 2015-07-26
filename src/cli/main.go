@@ -62,7 +62,7 @@ func main() {
 	var output string
 	//var filters string
 	
-	if len(os.Args) < 3 {
+	if len(os.Args) < 2 {
 		location = "autoip"
 		feature = "conditions,forecast"
 		output = "summary"
