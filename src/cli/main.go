@@ -59,7 +59,6 @@ func main() {
 	var location string
 	var feature string
 	var output string
-	//var filters string
 
 	if len(os.Args) < 2 {
 		location = "autoip"
@@ -96,9 +95,21 @@ func main() {
 	}
 
 	wd, err := wu.Query(location, feature)
-
 	if err != nil {
 		fmt.Println(err)
+		return
+	}
+
+	locationResults := wd.Response.Results
+	if locationResults != nil {
+		fmt.Println("Locations matched:")
+		for _, lr := range locationResults {
+			if lr.State != "" {
+				fmt.Printf("  * %s, %s, %s (zmw:%s)\n", lr.City, lr.State, lr.CountryName, lr.Zmw)
+			} else {
+				fmt.Printf("  * %s, %s (zmw:%s)\n", lr.City, lr.CountryName, lr.Zmw)
+			}
+		}
 		return
 	}
 
@@ -122,6 +133,8 @@ func main() {
 			fmt.Println("Feels like:", current.FeelslikeString)
 			fmt.Println("Wind:", current.WindString)
 			fmt.Println("Precipitation:", current.PrecipTodayString)
+		} else {
+			fmt.Println("Raw output only available with the conditions feature.")
 		}
 
 	default:
@@ -161,7 +174,7 @@ func main() {
 			fmt.Printf("   Low Temp: %s\n", almanac.TempLow.Normal.F)
 			fmt.Printf("   Record Low Temp: %s\n", almanac.TempLow.Record.F)
 			fmt.Printf("   Date: %s\n", almanac.TempLow.Recordyear)
-
+			fmt.Println()
 		}
 
 		if strings.Contains(feature, "forecast") {
@@ -179,25 +192,24 @@ func main() {
 
 			if strings.Contains(feature, "moonphase") {
 				fmt.Println("\nMoonphase:")
-
 				fmt.Printf("   Age: %s\n", moonphase.AgeOfMoon)
 				fmt.Printf("   Time: %s:%s\n", moonphase.CurrentTime.Hour, moonphase.CurrentTime.Minute)
 				fmt.Printf("   Percent Illuminated: %s\n", moonphase.PercentIlluminated)
 				fmt.Printf("   Sunrise: %s:%s\n", moonphase.Sunrise.Hour, moonphase.Sunrise.Minute)
 				fmt.Printf("   Sunset: %s:%s\n", moonphase.Sunset.Hour, moonphase.Sunset.Minute)
+				fmt.Println()
 
 			}
 			if strings.Contains(feature, "satellite") {
 				fmt.Println("\nMoonphase:")
-
 				fmt.Printf("   Imageurl: %s\n", satellite.ImageURL)
 				fmt.Printf("   Imageurl r4: %s:%s\n", satellite.ImageURLIr4)
 				fmt.Printf("   Imageurl VI: %s:%s\n", satellite.ImageURLVis)
-
+				fmt.Println()
 			}
-
-			fmt.Printf("\n%s\n", current.ObservationTime)
 		}
-
+	}
+	if (current.ObservationTime != "") {
+		fmt.Printf("\n%s\n", current.ObservationTime)
 	}
 }
