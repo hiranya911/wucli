@@ -44,11 +44,11 @@ func printUsage() {
 	fmt.Println("\t  * hourly ")
 	fmt.Println("\t  * satellite ")
 
-	fmt.Println("\nWucli can output data formatted in the following types\n")
+	fmt.Println("\n\tWucli can output data formatted in the following formats:")
 	fmt.Println("\t  * summary (default)")
 	fmt.Println("\t  * raw (key/value pairs)")
 
-	fmt.Println("CREDITS")
+	fmt.Println("\nCREDITS")
 	fmt.Println("\tDeveloped by: Hiranya Jayathilaka and Jason Clark (mithereal@gmail.com)")
 	fmt.Println("\tRemote API: http://www.wunderground.com\n")
 }
